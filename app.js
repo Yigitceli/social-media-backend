@@ -16,7 +16,7 @@ const app = express();
 // view engine setup
 
 app.use(logger("dev"));
-app.use(cors({ origin: "https://social-media-frontend-mlyfvvwgv-yigitceli.vercel.app", credentials: true }));
+app.use(cors({ origin: "https://social-media-frontend-three.vercel.app", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
