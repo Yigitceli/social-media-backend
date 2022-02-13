@@ -39,7 +39,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
 });
 
-app.listen(5000, async () => {
+app.listen(process.env.PORT, async () => {
   console.log("Server listening at 5000");
   mongoose
     .connect(process.env.MONGODB_CONNECTION)
