@@ -66,7 +66,7 @@ router.get("/", async (req, res, next) => {
   const { category, userId } = req.query;
   try {
     if (!category && !userId) {
-      const pins = await Pin.find();
+      const pins = await Pin.find().sort({ createdAt: -1 });
       if (pins.length > 0)
         return res
           .status(200)
@@ -78,7 +78,7 @@ router.get("/", async (req, res, next) => {
     if (userId) {
       const pins = await Pin.find({
         "postedBy.uid": userId,
-      });
+      }).sort({ createdAt: -1 });
 
       if (pins.length <= 0)
         return res.status(404).json({ response: "No pins found!" });
@@ -86,7 +86,7 @@ router.get("/", async (req, res, next) => {
       return res.status(200).json({ response: "Pins found!", payload: pins });
     }
 
-    const pins = await Pin.find({ category });
+    const pins = await Pin.find({ category }).sort({ createdAt: -1 });
     if (pins.length > 0)
       return res
         .status(200)
@@ -99,22 +99,22 @@ router.get("/", async (req, res, next) => {
 
 router.get("/search", verifyToken, async (req, res, next) => {
   var { query } = req.query;
-  query = query.toLowerCase();
+
   try {
     if (query) {
       const pins = await Pin.find({
         $or: [
-          { category: query },
+          { category: query.toLowerCase() },
           { title: query },
           { description: { $regex: query } },
           { "postedBy.name": { $regex: query } },
         ],
-      });
+      }).sort({ createdAt: -1 });
       if (pins.length <= 0)
         return res.status(404).json({ response: "No pin found!" });
       return res.status(200).json({ response: "Pins found!", payload: pins });
     } else {
-      const pins = await Pin.find();
+      const pins = await Pin.find().sort({ createdAt: -1 });
       if (pins.length > 0)
         return res
           .status(200)
