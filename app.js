@@ -15,8 +15,23 @@ const app = express();
 
 // view engine setup
 
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+    'DELETE',
+    'UPDATE'
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
 app.use(logger("dev"));
-app.use(cors({ origin: "https://social-media-frontend-yigitceli.vercel.app", credentials: true }));
+app.use(cors(corsOpts));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
